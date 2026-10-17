@@ -298,3 +298,15 @@ h1 em,h2 em{color:var(--ink)}
 @font-face{font-family:'Prestol Digits';font-weight:400 700;font-display:swap;src:url(../assets/fonts/font-4.woff2) format('woff2');unicode-range:U+0030-0039}
 :root{--serif:'Prestol Digits','Playfair Display',Georgia,serif}
 .hero-stats>div:last-child strong{font-size:38px;white-space:nowrap}
+
+/* микроэффекты как в v5: прожектор на карточках и пружинящий переключатель (волну на кнопки не ставим, у v4 своя заливка) */
+.spot{position:relative;isolation:isolate}
+.spot:after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(0,71,171,.08),transparent 62%);opacity:0;transition:opacity .35s}
+.spot:hover:after{opacity:1}
+.segmented{position:relative}
+.segmented:before{content:'';position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:var(--ink);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.segmented.is-right:before{transform:translateX(100%)}
+.segmented button,.segmented button[aria-pressed=true]{position:relative;z-index:1;background:transparent}
+.segmented button:hover:not([aria-pressed=true]){background:transparent}
+.segmented button[aria-pressed=true]{color:var(--paper)}
+@media (prefers-reduced-motion:reduce){.segmented:before{transition:none}}

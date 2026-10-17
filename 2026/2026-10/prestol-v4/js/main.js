@@ -84,3 +84,6 @@ $('#reset-form').addEventListener('click',resetQuiz);
 const METRIKA_ID=0;
 function goal(name){if(METRIKA_ID&&typeof window.ym==='function')window.ym(METRIKA_ID,'reachGoal',name);}
 document.addEventListener('click',e=>{const el=e.target.closest('[data-goal]');if(el)goal(el.dataset.goal);});
+// микроэффекты как в v5: прожектор только для мыши
+if(matchMedia('(hover:hover) and (pointer:fine)').matches&&!reduceMotion){$$('.fear-card,.step-body,.layout-points article').forEach(el=>{el.classList.add('spot');el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',e.clientX-r.left+'px');el.style.setProperty('--my',e.clientY-r.top+'px');});});}
+$$('[data-layout]').forEach(b=>b.addEventListener('click',()=>$('.segmented').classList.toggle('is-right',b.dataset.layout==='mismatched')));
