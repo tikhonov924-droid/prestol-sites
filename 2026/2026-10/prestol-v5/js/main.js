@@ -81,3 +81,11 @@ $('#reset-form').addEventListener('click',resetQuiz);
 const METRIKA_ID=0;
 function goal(name){if(METRIKA_ID&&typeof window.ym==='function')window.ym(METRIKA_ID,'reachGoal',name);}
 document.addEventListener('click',e=>{const el=e.target.closest('[data-goal]');if(el)goal(el.dataset.goal);});
+// v6: микроэффекты. Прожектор и наклон только для мыши, на тач-экранах они бесполезны
+const finePointer=matchMedia('(hover:hover) and (pointer:fine)').matches;
+if(finePointer&&!reduceMotion){
+  $$('.fear-card,.product,.layout-points article,.step').forEach(el=>{el.classList.add('spot');el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',e.clientX-r.left+'px');el.style.setProperty('--my',e.clientY-r.top+'px');});});
+  $$('.material-card').forEach(el=>{el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;el.style.setProperty('--rx',((.5-y)*5).toFixed(2)+'deg');el.style.setProperty('--ry',((x-.5)*7).toFixed(2)+'deg');el.style.setProperty('--sx',(x*100).toFixed(1)+'%');el.classList.add('is-tilting');});el.addEventListener('pointerleave',()=>el.classList.remove('is-tilting'));});
+}
+if(!reduceMotion)document.addEventListener('pointerdown',e=>{const b=e.target.closest('.button');if(!b)return;const r=b.getBoundingClientRect(),s=document.createElement('span');s.className='ripple';s.style.left=e.clientX-r.left+'px';s.style.top=e.clientY-r.top+'px';b.append(s);s.addEventListener('animationend',()=>s.remove());});
+$$('[data-layout]').forEach(b=>b.addEventListener('click',()=>$('.segmented').classList.toggle('is-right',b.dataset.layout==='mismatched')));
